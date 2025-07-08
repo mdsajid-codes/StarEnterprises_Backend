@@ -15,6 +15,7 @@ public class NewPdf {
     private String billMonth;
     private String tariffDetail;
     private Double areaSqFt;
+    private String tower;
     private String tariff;
     private Double mainsLoad;
     private Double mainsFcKw;

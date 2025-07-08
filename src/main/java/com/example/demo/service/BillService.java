@@ -101,6 +101,7 @@ public class BillService {
             pdfBill.setFlatNo(exitingData.getFlatNo());
             pdfBill.setAddress(exitingData.getAddress());
             pdfBill.setBillMonth(billMonth);
+            pdfBill.setTower(row.getCell(2).getStringCellValue());
             pdfBill.setAreaSqFt(row.getCell(9).getNumericCellValue());
             pdfBill.setTariff(row.getCell(4).getStringCellValue());
             pdfBill.setMainsLoad(row.getCell(5).getNumericCellValue());
@@ -163,12 +164,12 @@ public class BillService {
         companyName.setAlignment(Element.ALIGN_CENTER);
         doc.add(companyName);
 
-        Paragraph siteAddress = new Paragraph("SITE ADD:- Star Enterprises, Kunli, Sonipat(Haryana) Kingsbury Apartment", normalFont);
+        Paragraph siteAddress = new Paragraph("SITE ADD:- MAHAGUN MANSION, INDIRAPURAM GAJIYABAD", normalFont);
         siteAddress.setAlignment(Element.ALIGN_CENTER);
         siteAddress.setSpacingAfter(10);
         doc.add(siteAddress);
 
-        Paragraph reportTitle = new Paragraph("REPORT", headerFont);
+        Paragraph reportTitle = new Paragraph("Electricity Bill", headerFont);
         reportTitle.setAlignment(Element.ALIGN_CENTER);
         reportTitle.setSpacingAfter(15);
         doc.add(reportTitle);
@@ -192,17 +193,13 @@ public class BillService {
         customerInfoTable.addCell(createInfoCell(pdfBill.getTariff(), normalFont, false));
 
         // Row 3
-        customerInfoTable.addCell(createInfoCell("Meter No. ", normalFont, true));
-        customerInfoTable.addCell(createInfoCell(pdfBill.getUsername(), normalFont, false));
+        customerInfoTable.addCell(createInfoCell("Tower ", normalFont, true));
+        customerInfoTable.addCell(createInfoCell(pdfBill.getTower(), normalFont, false));
         customerInfoTable.addCell(createInfoCell("Sanctioned load on Mains", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getMainsLoad()), normalFont, false));
 
         // Row 4
-        customerInfoTable.addCell(createInfoCell("Tariff Detail", normalFont, true));
-        customerInfoTable.addCell(createInfoCell("", normalFont, false));
-        customerInfoTable.addCell(createInfoCell("Sanctioned load on DG", normalFont, true));
-        customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getDgLoad()), normalFont, false));
-
+       
         // Row 4 - Address spanning multiple cells
         PdfPCell addressLableCell = createInfoCell("Address", normalFont, true);
         customerInfoTable.addCell(addressLableCell);
@@ -213,20 +210,28 @@ public class BillService {
         customerInfoTable.addCell(createInfoCell("Mains FC/KW ", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.1f", pdfBill.getMainsFcKw()), normalFont, false));
 
+        // Row
+
+        customerInfoTable.addCell(createInfoCell("", normalFont, true));
+        customerInfoTable.addCell(createInfoCell("", normalFont, false));
+        customerInfoTable.addCell(createInfoCell("Sanctioned load on DG", normalFont, true));
+        customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getDgLoad()), normalFont, false));
+
+
         // Row 6
-        customerInfoTable.addCell(createInfoCell("", normalFont, false));
-        customerInfoTable.addCell(createInfoCell("", normalFont, false));
+        customerInfoTable.addCell(createInfoCell("Meter No", normalFont,true));
+        customerInfoTable.addCell(createInfoCell(pdfBill.getUsername(), normalFont, false));
         customerInfoTable.addCell(createInfoCell("DG FC/KW ", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getDgFcKw()), normalFont, false));
 
         // Row 7
-        customerInfoTable.addCell(createInfoCell("", normalFont, true));
+        customerInfoTable.addCell(createInfoCell("Tariff Detail", normalFont, true));
         customerInfoTable.addCell(createInfoCell("", normalFont, false));
         customerInfoTable.addCell(createInfoCell("Mains Unit Price", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getMainsUnitPrice()), normalFont, false));
 
         // Row 8
-        customerInfoTable.addCell(createInfoCell("Area Sq. ft", normalFont, false));
+        customerInfoTable.addCell(createInfoCell("Area Sq. ft", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getAreaSqFt()), normalFont, false));
         customerInfoTable.addCell(createInfoCell("DG Unit Pricee", normalFont, true));
         customerInfoTable.addCell(createInfoCell(String.format("%.0f", pdfBill.getDgUnitPrice()), normalFont, false));
@@ -248,14 +253,14 @@ public class BillService {
         customerInfoTable.addCell(createInfoCell("", normalFont, false));
         customerInfoTable.addCell(createInfoCell("", normalFont, false));
         customerInfoTable.addCell(createInfoCell("Meter Balance", normalFont, true));
-        customerInfoTable.addCell(createInfoCell(String.format("Rs. %.0f", pdfBill.getMeterBalance()), normalFont, true));
+        customerInfoTable.addCell(createInfoCell(String.format("Rs. %.0f", pdfBill.getMeterBalance()), normalFont, false));
 
         // Row 12
 
         customerInfoTable.addCell(createInfoCell("", normalFont, false));
         customerInfoTable.addCell(createInfoCell("", normalFont, false));
         customerInfoTable.addCell(createInfoCell("Total Cash Added", normalFont, true));
-        customerInfoTable.addCell(createInfoCell(String.format("Rs. %.0f", pdfBill.getTotalCashAddedInMeter()), normalFont, true));
+        customerInfoTable.addCell(createInfoCell(String.format("Rs. %.0f", pdfBill.getTotalCashAddedInMeter()), normalFont, false));
 
         doc.add(customerInfoTable);
 
